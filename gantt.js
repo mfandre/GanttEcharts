@@ -62,7 +62,13 @@ var _mappedData = mapData(_taskData)
 
 console.log(_mappedData)
 
-var _taskDataDimensions = ['taskName', 'start', 'end', 'taskId', 'index'];
+var _taskDataDimensions = [
+    {name: 'index', type: 'number'},
+    {name: 'taskName', type: 'ordinal'},
+    {name: 'start', type: 'time'},
+    {name: 'end', type: 'time'},
+    {name: 'taskId', type: 'number'}
+]
 
 option = {
         tooltip: {
@@ -75,9 +81,9 @@ option = {
                 //console.log("info", info)
                 var value = info.value;
 
-                var taskName = value[0];
-                var start = (new Date(value[1])).toLocaleDateString("pt-BR");
-                var end = (new Date(value[2])).toLocaleDateString("pt-BR");
+                var taskName = value[1];
+                var start = (new Date(value[2])).toLocaleDateString("pt-BR");
+                var end = (new Date(value[3])).toLocaleDateString("pt-BR");
 
                 return [
                     '<div class="tooltip-title">' + echarts.format.encodeHTML(taskName) + '</div>',
@@ -191,8 +197,8 @@ option = {
             renderItem: renderGanttItem,
             dimensions: _taskDataDimensions,
             encode: {
-                x: [1, 2],
-                y: 3,//reference of taskid
+                x: [1, 2, 3, 4],
+                y: 4,//reference of taskid
                 tooltip: [0, 1, 2]
             },
             data: _mappedData //Im changing the item object to array... this is why the encode is filled with indexed
@@ -202,7 +208,7 @@ option = {
             dimensions: _taskDataDimensions,
             encode: {
                 x: -1, // Then this series will not controlled by x.
-                y: 3, //reference of taskid
+                y: 4, //reference of taskid
                 tooltip: [0, 1, 2]
             },
             data: _mappedData //Im changing the item object to array... this is why the encode is filled with indexed
@@ -217,7 +223,7 @@ option = {
             tooltip: null,
             encode: {
                 x: -1, // Then this series will not controlled by x.
-                y: 3, //reference of taskid
+                y: 4, //reference of taskid
             },
             data: _mappedData //Im changing the item object to array... this is why the encode is filled with indexed
         }/*,{
@@ -227,17 +233,13 @@ option = {
         }*/]
     };
     
-
-    
 function renderGanttItem(params, api) {
-    var index = api.value(4);
-    var timeStart = api.coord([api.value(1), index]);
-    var timeEnd = api.coord([api.value(2), index]);
-    var taskName = api.value(0);
-    var taskId = api.value(3);
+    var index = api.value(0);
+    var taskName = api.value(1);
+    var timeStart = api.coord([api.value(2), index]);
+    var timeEnd = api.coord([api.value(3), index]);
+    var taskId = api.value(4);
     
-    var coordSys = params.coordSys;
-
     var barLength = timeEnd[0] - timeStart[0];
     // Get the heigth corresponds to length 1 on y axis.
     var barHeight = api.size([0, 1])[1] * HEIGHT_RATIO;
@@ -280,11 +282,11 @@ function renderAxisLabelItem(params, api) {
     
     //console.log("renderAxisLabelItem", api.value(0), api.value(1), api);
     //console.log("api.coord([0, api.value(0)])", api.coord([0, api.value(0)]))
-    var index = api.value(4)
-    var taskName = api.value(0)
-    var taskId = api.value(3)
-    var start = api.value(1)
-    var end = api.value(2)
+    var index = api.value(0)
+    var taskName = api.value(1)
+    var taskId = api.value(4)
+    var start = api.value(2)
+    var end = api.value(3)
     
     var totalLeft = datediff(start, end)
     var daysToEnd = daysLeft(end)
@@ -357,11 +359,11 @@ function clipRectByRect(params, rect) {
 }
 
 function renderArrowsItem(params, api) {
-    var index = api.value(4);
-    var timeStart = api.coord([api.value(1), index]);
-    var timeEnd = api.coord([api.value(2), index]);
-    var taskName = api.value(0);
-    var taskId = api.value(3);
+    var index = api.value(0);
+    var taskName = api.value(1);
+    var timeStart = api.coord([api.value(2), index]);
+    var timeEnd = api.coord([api.value(3), index]);
+    var taskId = api.value(4);
     
     var barLength = timeEnd[0] - timeStart[0];
     // Get the heigth corresponds to length 1 on y axis.
@@ -378,9 +380,9 @@ function renderArrowsItem(params, api) {
     for(let j = 0; j < dependencies.length; j++){
         taskFather = getTaskByIdInMappedData(_mappedData, dependencies[j])
         //console.log("dependencies", taskName, taskFather)
-        var indexFather = taskFather[4]; //index
-        var timeStartFather = api.coord([taskFather[3], indexFather]);
-        var timeEndFather = api.coord([taskFather[2], indexFather]);
+        var indexFather = taskFather[0]; //index
+        var timeStartFather = api.coord([taskFather[2], indexFather]);
+        var timeEndFather = api.coord([taskFather[3], indexFather]);
         
         var barLengthFather = timeEndFather[0] - timeStartFather[0];
         // Get the heigth corresponds to length 1 on y axis.
@@ -465,7 +467,7 @@ function daysLeft(baseDate){
 function mapData(taskData){
     //Im changing the item object to array... this is why the encode is filled with indexed
     return echarts.util.map(_taskData, function (item, index) {
-        let index_attributes = [item.taskName, item.start, item.end, item.taskId, index];
+        let index_attributes = [index, item.taskName, item.start, item.end, item.taskId];
         return index_attributes;
     })
 }
@@ -489,7 +491,7 @@ function getTaskById(taskData, id){
 
 function getTaskByIdInMappedData(mappedData, id){
     for(let i = 0; i < mappedData.length; i++){
-        if(mappedData[i][3] == id){
+        if(mappedData[i][4] == id){
             return mappedData[i];
         }
     }
