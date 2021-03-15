@@ -56,7 +56,11 @@ var _taskData = [
     }
 ];
 
+_taskData = _taskData.sort(compareTasks)
+
 var _mappedData = mapData(_taskData)
+
+console.log(_mappedData)
 
 var _taskDataDimensions = ['taskName', 'start', 'end', 'taskId', 'index'];
 
@@ -223,6 +227,8 @@ option = {
         }*/]
     };
     
+
+    
 function renderGanttItem(params, api) {
     var index = api.value(4);
     var timeStart = api.coord([api.value(1), index]);
@@ -294,35 +300,45 @@ function renderAxisLabelItem(params, api) {
             y
         ],
         children: [{
-            type: 'path',
-            shape: {
-                d: 'M0,0 L0,-20 L30,-20 C42,-20 38,-1 50,-1 L70,-1 L70,0 Z',
-                x: 0,
-                y: -20,
-                width: 210,
-                height: 20,
-                layout: 'cover'
-            },
+            type: 'rect',
+            shape: {x: 0, y: -44, width: 210, height: 43},
             style: {
-                fill: '#368c6c'
+                fill: '#fff',
+                stroke: '#999',
+                lineWidth: 2,
+                shadowBlur: 8,
+                shadowOffsetX: 3,
+                shadowOffsetY: 3,
+                shadowColor: 'rgba(0,0,0,0.3)'
+            }
+        },{ // Position the image at the bottom center of its container.
+            type: 'image',
+            //left: 'center', // Position at the center horizontally.
+            //bottom: '10%',  // Position beyond the bottom boundary 10%.
+            style: {
+                image: 'http://carismartes.com.br/assets/global/images/avatars/avatar1_big@2x.png',
+                x: 5,
+                y: -35,
+                width: 25,
+                height: 25
             }
         }, {
             type: 'text',
             style: {
-                x: 24,
-                y: -3,
+                x: 35,
+                y: -20,
                 text: taskName,
                 textVerticalAlign: 'bottom',
-                textAlign: 'center',
-                textFill: '#fff'
+                textAlign: 'left',
+                textFill: '#000'
             }
         }, {
             type: 'text',
             style: {
-                x: 207,
-                y: -2,
+                x: 35,
+                y: -10,
                 textVerticalAlign: 'bottom',
-                textAlign: 'right',
+                textAlign: 'left',
                 text: daysToEnd,
                 textFill: '#000',
                 fontSize: 9,
@@ -375,12 +391,36 @@ function renderArrowsItem(params, api) {
         
         links.push({
             type: 'group',
-            children: [{
+            children: [/*{
                 type: 'line',
                 shape: {
                     x1: xFather + barLengthFather,
                     y1: yFather + barHeightFather/2,
                     x2: x,
+                    y2: y + barHeight/2
+                },
+                style: api.style({
+                    fill: "#000",
+                    stroke: "#000"
+                })
+            },*/{
+                type: 'line',
+                shape: {
+                    x1: xFather + barLengthFather,
+                    y1: yFather + barHeightFather/2,
+                    x2: x,
+                    y2: yFather + barHeightFather/2
+                },
+                style: api.style({
+                    fill: "#000",
+                    stroke: "#000"
+                })
+            },{
+                type: 'line',
+                shape: {
+                    x1: x,
+                    y1: yFather + barHeightFather/2,
+                    x2: x-10,
                     y2: y + barHeight/2
                 },
                 style: api.style({
@@ -428,6 +468,13 @@ function mapData(taskData){
         let index_attributes = [item.taskName, item.start, item.end, item.taskId, index];
         return index_attributes;
     })
+}
+
+function compareTasks(a, b) {
+    if (a.start > b.start) return -1;
+    if (b.start > a.start) return 1;
+    
+    return 0;
 }
 
 function getTaskById(taskData, id){
