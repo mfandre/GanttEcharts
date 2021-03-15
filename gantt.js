@@ -19,40 +19,58 @@ var _taskData = [
         taskId: 1,
         taskDependencies: [],
         start: now1_1,
-        end: now1_2
+        end: now1_2,
+        donePercentage: 10,
+        ower: '',
+        image: 'http://carismartes.com.br/assets/global/images/avatars/avatar2_big@2x.png'
     },{
         taskName: "tarefa 5",
         taskId: 5,
         taskDependencies: [3],
         start: now1_1,
-        end: now1_2
+        end: now1_2,
+        donePercentage: 10,
+        ower: '',
+        image: 'http://carismartes.com.br/assets/global/images/avatars/avatar1_big@2x.png'
     },
     {
         taskName: "tarefa 2",
         taskId: 2,
         taskDependencies: [1],
         start: now2_1,
-        end: now2_2
+        end: now2_2,
+        donePercentage: 10,
+        ower: '',
+        image: 'http://carismartes.com.br/assets/global/images/avatars/avatar3_big@2x.png'
     },
    {
         taskName: "tarefa 3",
         taskId: 3,
         taskDependencies: [],
         start: now3_1,
-        end: now3_2
+        end: now3_2,
+        donePercentage: 80,
+        ower: '',
+        image: 'http://carismartes.com.br/assets/global/images/avatars/avatar1_big@2x.png'
     },
     {
         taskName: "tarefa 4",
         taskId: 4,
         taskDependencies: [2,3],
         start: now4_1,
-        end: now4_2
+        end: now4_2,
+        donePercentage: 10,
+        ower: '',
+        image: 'http://carismartes.com.br/assets/global/images/avatars/avatar4_big@2x.png'
     },{
         taskName: "tarefa 6",
         taskId: 6,
         taskDependencies: [1,3,5],
         start: now2_1,
-        end: now2_2
+        end: now2_2,
+        donePercentage: 10,
+        ower: '',
+        image: 'http://carismartes.com.br/assets/global/images/avatars/avatar1_big@2x.png'
     }
 ];
 
@@ -67,7 +85,10 @@ var _taskDataDimensions = [
     {name: 'taskName', type: 'ordinal'},
     {name: 'start', type: 'time'},
     {name: 'end', type: 'time'},
-    {name: 'taskId', type: 'number'}
+    {name: 'taskId', type: 'number'},
+    {name: 'donePercentage', type: 'number'},
+    {name: 'owner', type: 'ordinal'},
+    {name: 'image', type: 'ordinal'}
 ]
 
 option = {
@@ -84,11 +105,12 @@ option = {
                 var taskName = value[1];
                 var start = (new Date(value[2])).toLocaleDateString("pt-BR");
                 var end = (new Date(value[3])).toLocaleDateString("pt-BR");
+                var donePercentage = value[5]
 
                 return [
                     '<div class="tooltip-title">' + echarts.format.encodeHTML(taskName) + '</div>',
-                    ' &nbsp;&nbsp;' + start + ' - ',
-                    end + '<br>'
+                    start + ' - ',
+                    end + '<br>', donePercentage + '% done'
                 ].join('');
             }
         },
@@ -239,6 +261,7 @@ function renderGanttItem(params, api) {
     var timeStart = api.coord([api.value(2), index]);
     var timeEnd = api.coord([api.value(3), index]);
     var taskId = api.value(4);
+    var donePercentage = api.value(5)
     
     var barLength = timeEnd[0] - timeStart[0];
     // Get the heigth corresponds to length 1 on y axis.
@@ -256,14 +279,20 @@ function renderGanttItem(params, api) {
     var rectText = clipRectByRect(params, {
         x: x, y: y, width: barLength, height: barHeight
     });
+    var rectPercent = clipRectByRect(params, {
+        x: x, y: y, width: barLength*donePercentage/100, height: 10
+    });
 
     return {
         type: 'group',
+        info: {bunda: 'bunda'},
         children: [{
             type: 'rect',
             ignore: !rectNormal,
             shape: rectNormal,
-            style: api.style()
+            style: api.style({
+                fill: 'rgb(0, 48, 73)'
+            })
         }, {
             type: 'rect',
             ignore: !rectText,
@@ -273,6 +302,14 @@ function renderGanttItem(params, api) {
                 stroke: 'transparent',
                 text: text,
                 textFill: '#fff'
+            })
+        }, {
+            type: 'rect',
+            ignore: !rectPercent,
+            shape: rectPercent,
+            style: api.style({
+                fill: 'rgba(214, 40, 40, 1)',
+                stroke: 'transparent',
             })
         }]
     };
@@ -287,6 +324,8 @@ function renderAxisLabelItem(params, api) {
     var taskId = api.value(4)
     var start = api.value(2)
     var end = api.value(3)
+    var owner = api.value(6)
+    var image = api.value(7)
     
     var totalLeft = datediff(start, end)
     var daysToEnd = daysLeft(end)
@@ -303,22 +342,22 @@ function renderAxisLabelItem(params, api) {
         ],
         children: [{
             type: 'rect',
-            shape: {x: 0, y: -44, width: 210, height: 43},
+            shape: {x: 0, y: -46, width: 210, height: 46},
             style: {
-                fill: '#fff',
-                stroke: '#999',
-                lineWidth: 2,
-                shadowBlur: 8,
-                shadowOffsetX: 3,
-                shadowOffsetY: 3,
-                shadowColor: 'rgba(0,0,0,0.3)'
+                fill: 'rgb(247, 127, 0)',
+                //stroke: 'rgb(247, 127, 0)',
+                //lineWidth: 2,
+                //shadowBlur: 8,
+                //shadowOffsetX: 3,
+                //shadowOffsetY: 3,
+                //shadowColor: 'rgba(0,0,0,0.3)'
             }
         },{ // Position the image at the bottom center of its container.
             type: 'image',
             //left: 'center', // Position at the center horizontally.
             //bottom: '10%',  // Position beyond the bottom boundary 10%.
             style: {
-                image: 'http://carismartes.com.br/assets/global/images/avatars/avatar1_big@2x.png',
+                image: image,
                 x: 5,
                 y: -35,
                 width: 25,
@@ -467,7 +506,7 @@ function daysLeft(baseDate){
 function mapData(taskData){
     //Im changing the item object to array... this is why the encode is filled with indexed
     return echarts.util.map(_taskData, function (item, index) {
-        let index_attributes = [index, item.taskName, item.start, item.end, item.taskId];
+        let index_attributes = [index, item.taskName, item.start, item.end, item.taskId, item.donePercentage, item.owner, item.image];
         return index_attributes;
     })
 }
@@ -498,5 +537,12 @@ function getTaskByIdInMappedData(mappedData, id){
     
     return null;
 }
+
+myChart.on('click', function (params) {
+    alert("you clicked at "+ JSON.stringify(params.value) +" and we will change percentage to 100%")
+    console.log("click",params.value)
+    _mappedData[params.value[0]][5] = 100
+    myChart.setOption(option);
+});
 
 myChart.setOption(option);
