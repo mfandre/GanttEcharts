@@ -15,6 +15,7 @@ var now4_2 = (new Date()).setDate(now.getDate() + 40);
 
 var _taskData = [
     {
+        groupName: "Group 1",
         taskName: "tarefa 1",
         taskId: 1,
         taskDependencies: [],
@@ -24,16 +25,18 @@ var _taskData = [
         ower: '',
         image: 'http://carismartes.com.br/assets/global/images/avatars/avatar2_big@2x.png'
     },{
+        groupName: "Group 3",
         taskName: "tarefa 5",
         taskId: 5,
         taskDependencies: [3],
         start: now1_1,
         end: now1_2,
-        donePercentage: 10,
+        donePercentage: 30,
         ower: '',
         image: 'http://carismartes.com.br/assets/global/images/avatars/avatar1_big@2x.png'
     },
     {
+        groupName: "Group 2",
         taskName: "tarefa 2",
         taskId: 2,
         taskDependencies: [1],
@@ -44,6 +47,7 @@ var _taskData = [
         image: 'http://carismartes.com.br/assets/global/images/avatars/avatar3_big@2x.png'
     },
    {
+       groupName: "Group 3",
         taskName: "tarefa 3",
         taskId: 3,
         taskDependencies: [],
@@ -54,21 +58,23 @@ var _taskData = [
         image: 'http://carismartes.com.br/assets/global/images/avatars/avatar1_big@2x.png'
     },
     {
+        groupName: "Group 2",
         taskName: "tarefa 4",
         taskId: 4,
         taskDependencies: [2,3],
         start: now4_1,
         end: now4_2,
-        donePercentage: 10,
+        donePercentage: 60,
         ower: '',
         image: 'http://carismartes.com.br/assets/global/images/avatars/avatar4_big@2x.png'
     },{
+        groupName: "Group 2",
         taskName: "tarefa 6",
         taskId: 6,
         taskDependencies: [1,3,5],
         start: now2_1,
         end: now2_2,
-        donePercentage: 10,
+        donePercentage: 100,
         ower: '',
         image: 'http://carismartes.com.br/assets/global/images/avatars/avatar1_big@2x.png'
     }
@@ -95,7 +101,7 @@ option = {
         tooltip: {
             trigger: 'item',
             formatter: function (info) {
-                //removing tooltipo from the lines
+                //removing tooltip from the lines
                 if(info != undefined && info.seriesIndex >= 2){
                     return;
                 }
