@@ -16,6 +16,9 @@ var now4_2 = (new Date()).setDate(now.getDate() + 40);
 var now5_1 = (new Date()).setDate(now.getDate() + 43);
 var now5_2 = (new Date()).setDate(now.getDate() + 70);
 
+var now6_1 = (new Date()).setDate(now.getDate() + 68);
+var now6_2 = (new Date()).setDate(now.getDate() + 75);
+
 var _taskData = [
     {
         groupName: "Group 1",
@@ -108,6 +111,17 @@ var _taskData = [
         donePercentage: 80,
         ower: '',
         image: 'http://carismartes.com.br/assets/global/images/avatars/avatar1_big@2x.png'
+    },{
+        groupName: "Group 5",
+        groupOrder: 5,
+        taskName: "tarefa 9",
+        taskId: 9,
+        taskDependencies: [7,8],
+        start: now6_1,
+        end: now6_2,
+        donePercentage: 30,
+        ower: '',
+        image: 'http://carismartes.com.br/assets/global/images/avatars/avatar1_big@2x.png'
     }
 ];
 
@@ -181,8 +195,8 @@ option = {
             bottom: 0,
             start: 0,
             end: 100,
-            handleIcon: 'M10.7,11.9H9.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4h1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-            handleSize: '80%',
+            //handleIcon: 'M10.7,11.9H9.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4h1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+            //handleSize: '80%',
             showDetail: false
         }, {
             type: 'inside',
@@ -190,30 +204,9 @@ option = {
             xAxisIndex: 0,
             filterMode: 'weakFilter',
             start: 0,
-           end: 100,
+            end: 100,
             zoomOnMouseWheel: false,
             moveOnMouseMove: true
-        }, {
-            type: 'slider',
-            yAxisIndex: 0,
-            zoomLock: true,
-            width: 10,
-            right: 10,
-            top: 70,
-           bottom: 20,
-            start: 0,
-            end: 100,
-            handleSize: 0,
-            showDetail: false,
-        }, {
-            type: 'inside',
-            id: 'insideY',
-            yAxisIndex: 0,
-            start: 0,
-            end: 100,
-            zoomOnMouseWheel: false,
-            moveOnMouseMove: true,
-            moveOnMouseWheel: true
         }],
         grid: {
             show: true,
@@ -221,6 +214,7 @@ option = {
             bottom: 20,
             left: 220,
             right: 20,
+            //height: '1000px',
             backgroundColor: '#fff',
             borderWidth: 0
         },
@@ -371,7 +365,7 @@ function renderAxisLabelItem(params, api) {
     var isToDrawGroup = api.value(9)
     var groupColor = api.value(10)
     
-    console.log(taskId, groupName, isToDrawGroup, groupColor)
+    //console.log(taskId, groupName, isToDrawGroup, groupColor)
     
     var totalLeft = datediff(start, end)
     var daysToEnd = daysLeft(end)
@@ -384,6 +378,7 @@ function renderAxisLabelItem(params, api) {
     
     let groupedElement = {
         type: 'group',
+        silent: true,
         position: [
             10,
             y
@@ -441,12 +436,6 @@ function renderAxisLabelItem(params, api) {
             shape: {x: 0, y: -91, width: 10, height: 46},
             style: {
                 fill: groupColor,
-                //stroke: 'rgb(247, 127, 0)',
-                //lineWidth: 2,
-                //shadowBlur: 8,
-                //shadowOffsetX: 3,
-                //shadowOffsetY: 3,
-                //shadowColor: 'rgba(0,0,0,0.3)'
             }
         })
     }else{
@@ -528,7 +517,7 @@ function renderArrowsItem(params, api) {
                         points: [[xFather + barLengthFather/2-5,(y+barHeightFather+10)],[xFather + barLengthFather/2+5,(y+barHeightFather+10)],[xFather + barLengthFather/2,(y+barHeightFather)] ]
                     },
                     style: api.style({
-                        fill: "#0f0",
+                        fill: "#000",
                         //stroke: "#000"
                     })
                 }
@@ -777,4 +766,8 @@ myChart.on('click', function (params) {
     myChart.setOption(option);
 });
 
+
 myChart.setOption(option);
+
+var chartHeight = _mappedData.length * 31 + 200;
+$('#graph-container').css({'height': chartHeight});
