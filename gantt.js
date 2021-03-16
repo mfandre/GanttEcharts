@@ -28,7 +28,7 @@ var _taskData = [
         groupName: "Group 3",
         taskName: "tarefa 5",
         taskId: 5,
-        taskDependencies: [3],
+        taskDependencies: [1,3],
         start: now1_1,
         end: now1_2,
         donePercentage: 30,
@@ -224,6 +224,20 @@ option = {
             max: _taskData.length
         },
         series: [{
+            type: 'custom',
+            clip: true,
+            itemStyle: {
+                borderType: 'dashed'
+            },
+            renderItem: renderArrowsItem,
+            dimensions: _taskDataDimensions,
+            tooltip: null,
+            encode: {
+                x: -1, // Then this series will not controlled by x.
+                y: 4, //reference of taskid
+            },
+            data: _mappedData //Im changing the item object to array... this is why the encode is filled with indexed
+        },{
             id: 'taskData',
             type: 'custom',
             renderItem: renderGanttItem,
@@ -242,20 +256,6 @@ option = {
                 x: -1, // Then this series will not controlled by x.
                 y: 4, //reference of taskid
                 tooltip: [0, 1, 2]
-            },
-            data: _mappedData //Im changing the item object to array... this is why the encode is filled with indexed
-        },{
-            type: 'custom',
-            clip: true,
-            itemStyle: {
-                borderType: 'dashed'
-            },
-            renderItem: renderArrowsItem,
-            dimensions: _taskDataDimensions,
-            tooltip: null,
-            encode: {
-                x: -1, // Then this series will not controlled by x.
-                y: 4, //reference of taskid
             },
             data: _mappedData //Im changing the item object to array... this is why the encode is filled with indexed
         }/*,{
@@ -433,6 +433,105 @@ function clipRectByRect(params, rect) {
 }
 
 function renderArrowsItem(params, api) {
+    var index = api.value(0);
+    var taskName = api.value(1);
+    var timeStart = api.coord([api.value(2), index]);
+    var timeEnd = api.coord([api.value(3), index]);
+    var taskId = api.value(4);
+    
+    var barLength = timeEnd[0] - timeStart[0];
+    // Get the heigth corresponds to length 1 on y axis.
+    var barHeight = api.size([0, 1])[1] * HEIGHT_RATIO;
+    var x = timeStart[0];
+    var y = timeStart[1] - barHeight;
+    
+    //the api.value only suports numeric and string values to get... to get taskDependencies I need to get from my real data variable
+    var currentData = _taskData[params.dataIndex]
+    var taskDependencies = currentData.taskDependencies
+    
+    let links = []
+    let dependencies = taskDependencies
+    for(let j = 0; j < dependencies.length; j++){
+        taskFather = getTaskByIdInMappedData(_mappedData, dependencies[j])
+        //console.log("dependencies", taskName, taskFather)
+        var indexFather = taskFather[0]; //index
+        var timeStartFather = api.coord([taskFather[2], indexFather]);
+        var timeEndFather = api.coord([taskFather[3], indexFather]);
+        
+        var barLengthFather = timeEndFather[0] - timeStartFather[0];
+        // Get the heigth corresponds to length 1 on y axis.
+        var barHeightFather = api.size([0, 1])[1] * HEIGHT_RATIO;
+        var xFather = timeStartFather[0];
+        var yFather = timeStartFather[1] - barHeightFather;
+        
+        let arrow = {}
+        //condition to draw the arrow correctly when a dependent task is exactly below another task
+        if (x < xFather + barLengthFather/2) {
+            arrow = {
+                type: 'polygon',
+                shape: {
+                    points: [[xFather + barLengthFather/2-5,(y)-10],[xFather + barLengthFather/2+5,(y) - 10],[xFather + barLengthFather/2,(y)] ]
+                },
+                style: api.style({
+                    fill: "#000",
+                    //stroke: "#000"
+                })
+            }
+        }else{
+            //draw normaly
+            arrow = {
+                type: 'polygon',
+                shape: {
+                    points: [[x-5,(y + barHeight/2)-5],[x-5,(y + barHeight/2) + 5],[x+5,(y + barHeight/2)] ]
+                },
+                style: api.style({
+                    fill: "#000",
+                    //stroke: "#000"
+                })
+            }
+        }
+            
+        let verticalLine = {
+                type: 'line',
+                shape: {
+                    x1: xFather + barLengthFather/2,
+                    y1: yFather + barHeightFather,
+                    x2: xFather + barLengthFather/2,
+                    y2: y + barHeightFather/2
+                },
+                style: api.style({
+                    fill: "#000",
+                    stroke: "#000"
+                })
+            }
+            
+        let horizontalLine = {
+                type: 'line',
+                shape: {
+                    x1: xFather + barLengthFather/2,
+                    y1: y + barHeightFather/2,
+                    x2: x,
+                    y2: y + barHeightFather/2
+                },
+                style: api.style({
+                    fill: "#000",
+                    stroke: "#000"
+                })
+            }
+        
+        links.push({
+            type: 'group',
+            children: [verticalLine,horizontalLine, arrow]
+        })
+    }
+
+    return {
+        type: 'group',
+        children: links
+    };
+}
+
+function renderArrowsItem2(params, api) {
     var index = api.value(0);
     var taskName = api.value(1);
     var timeStart = api.coord([api.value(2), index]);
