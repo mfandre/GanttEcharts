@@ -510,15 +510,28 @@ function renderArrowsItem(params, api) {
         let arrow = {}
         //condition to draw the arrow correctly when a dependent task is exactly below another task
         if (x < xFather + barLengthFather/2) {
-            arrow = {
-                type: 'polygon',
-                shape: {
-                    points: [[xFather + barLengthFather/2-5,(y)-10],[xFather + barLengthFather/2+5,(y) - 10],[xFather + barLengthFather/2,(y)] ]
-                },
-                style: api.style({
-                    fill: "#000",
-                    //stroke: "#000"
-                })
+            if(y > yFather){
+                arrow = {
+                    type: 'polygon',
+                    shape: {
+                        points: [[xFather + barLengthFather/2-5,(y)-10],[xFather + barLengthFather/2+5,(y) - 10],[xFather + barLengthFather/2,(y)] ]
+                    },
+                    style: api.style({
+                        fill: "#000",
+                        //stroke: "#000"
+                    })
+                }
+            }else{
+                arrow = {
+                    type: 'polygon',
+                    shape: {
+                        points: [[xFather + barLengthFather/2-5,(y+barHeightFather+10)],[xFather + barLengthFather/2+5,(y+barHeightFather+10)],[xFather + barLengthFather/2,(y+barHeightFather)] ]
+                    },
+                    style: api.style({
+                        fill: "#0f0",
+                        //stroke: "#000"
+                    })
+                }
             }
         }else{
             //draw normaly
