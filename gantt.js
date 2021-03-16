@@ -47,7 +47,7 @@ var _taskData = [
         image: 'http://carismartes.com.br/assets/global/images/avatars/avatar3_big@2x.png'
     },
    {
-       groupName: "Group 3",
+        groupName: "Group 3",
         taskName: "tarefa 3",
         taskId: 3,
         taskDependencies: [],
@@ -82,6 +82,7 @@ var _taskData = [
 
 _taskData = _taskData.sort(compareTasks)
 
+//after sort we mapp to maintain the order
 var _mappedData = mapData(_taskData)
 
 console.log(_mappedData)
@@ -94,7 +95,9 @@ var _taskDataDimensions = [
     {name: 'taskId', type: 'number'},
     {name: 'donePercentage', type: 'number'},
     {name: 'owner', type: 'ordinal'},
-    {name: 'image', type: 'ordinal'}
+    {name: 'image', type: 'ordinal'},
+    {name: 'groupName', type: 'ordinal'},
+    {name: 'isToDrawGroup', type: 'number'}
 ]
 
 option = {
@@ -332,6 +335,10 @@ function renderAxisLabelItem(params, api) {
     var end = api.value(3)
     var owner = api.value(6)
     var image = api.value(7)
+    var groupName = api.value(8)
+    var isToDrawGroup = api.value(9)
+    
+    console.log(taskId, groupName, isToDrawGroup)
     
     var totalLeft = datediff(start, end)
     var daysToEnd = daysLeft(end)
@@ -340,7 +347,9 @@ function renderAxisLabelItem(params, api) {
     if (y < params.coordSys.y + 5) {
         return;
     }
-    return {
+    
+    
+    let groupedElement = {
         type: 'group',
         position: [
             10,
@@ -392,6 +401,24 @@ function renderAxisLabelItem(params, api) {
             }
         }]
     };
+    
+    if(isToDrawGroup == 1){
+        groupedElement.children.push({
+            type: 'rect',
+            shape: {x: 0, y: -91, width: 10, height: 46},
+            style: {
+                fill: 'rgb(247, 127, 0)',
+                //stroke: 'rgb(247, 127, 0)',
+                //lineWidth: 2,
+                //shadowBlur: 8,
+                //shadowOffsetX: 3,
+                //shadowOffsetY: 3,
+                //shadowColor: 'rgba(0,0,0,0.3)'
+            }
+        })
+    }
+    
+    return groupedElement
 }
 
 function clipRectByRect(params, rect) {
@@ -511,10 +538,40 @@ function daysLeft(baseDate){
 
 function mapData(taskData){
     //Im changing the item object to array... this is why the encode is filled with indexed
-    return echarts.util.map(_taskData, function (item, index) {
-        let index_attributes = [index, item.taskName, item.start, item.end, item.taskId, item.donePercentage, item.owner, item.image];
-        return index_attributes;
-    })
+    var _groupData = mapGroups(_taskData)
+    
+    var mappedData = []
+    
+    for(let index = 0; index < taskData.length; index++){
+        let item = taskData[index]
+        
+        //filling the group information
+        // here I get the taskID gorupped by mapGroups functions and compare the position of taskid with the array present in the groupped. If the current taskid is in the end of array I dont need to draw the group
+        let isToDrawGroup = 0
+        let groupInfo = _groupData[item.groupName]
+        if(groupInfo != undefined && groupInfo.length > 1){
+            if(groupInfo.indexOf(item.taskId) < groupInfo.length-1)
+                isToDrawGroup = 1
+        }
+        
+        let index_attributes = [index, item.taskName, item.start, item.end, item.taskId, item.donePercentage, item.owner, item.image, item.groupName, isToDrawGroup];
+        mappedData.push(index_attributes);
+    }
+    
+    return mappedData
+}
+
+function mapGroups(taskData){
+    let mappedGroups = {}
+    //Im creating a map of groups => taskId
+    for(let i = 0; i < _taskData.length; i++){
+        if(mappedGroups[_taskData[i].groupName] == undefined)
+            mappedGroups[_taskData[i].groupName] = [_taskData[i].taskId]
+        else
+            mappedGroups[_taskData[i].groupName].push(_taskData[i].taskId)
+    }    
+    
+    return mappedGroups
 }
 
 function compareTasks(a, b) {
