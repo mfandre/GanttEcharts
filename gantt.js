@@ -97,7 +97,8 @@ var _taskDataDimensions = [
     {name: 'owner', type: 'ordinal'},
     {name: 'image', type: 'ordinal'},
     {name: 'groupName', type: 'ordinal'},
-    {name: 'isToDrawGroup', type: 'number'}
+    {name: 'isToDrawGroup', type: 'number'},
+    {name: 'groupColor', type: 'ordinal'},
 ]
 
 option = {
@@ -337,8 +338,9 @@ function renderAxisLabelItem(params, api) {
     var image = api.value(7)
     var groupName = api.value(8)
     var isToDrawGroup = api.value(9)
+    var groupColor = api.value(10)
     
-    console.log(taskId, groupName, isToDrawGroup)
+    console.log(taskId, groupName, isToDrawGroup, groupColor)
     
     var totalLeft = datediff(start, end)
     var daysToEnd = daysLeft(end)
@@ -359,7 +361,7 @@ function renderAxisLabelItem(params, api) {
             type: 'rect',
             shape: {x: 0, y: -46, width: 210, height: 46},
             style: {
-                fill: 'rgb(247, 127, 0)',
+                fill: groupColor,
                 //stroke: 'rgb(247, 127, 0)',
                 //lineWidth: 2,
                 //shadowBlur: 8,
@@ -407,7 +409,7 @@ function renderAxisLabelItem(params, api) {
             type: 'rect',
             shape: {x: 0, y: -91, width: 10, height: 46},
             style: {
-                fill: 'rgb(247, 127, 0)',
+                fill: groupColor,
                 //stroke: 'rgb(247, 127, 0)',
                 //lineWidth: 2,
                 //shadowBlur: 8,
@@ -549,12 +551,12 @@ function mapData(taskData){
         // here I get the taskID gorupped by mapGroups functions and compare the position of taskid with the array present in the groupped. If the current taskid is in the end of array I dont need to draw the group
         let isToDrawGroup = 0
         let groupInfo = _groupData[item.groupName]
-        if(groupInfo != undefined && groupInfo.length > 1){
-            if(groupInfo.indexOf(item.taskId) < groupInfo.length-1)
+        if(groupInfo != undefined && groupInfo.tasks.length > 1){
+            if(groupInfo.tasks.indexOf(item.taskId) < groupInfo.tasks.length-1)
                 isToDrawGroup = 1
         }
         
-        let index_attributes = [index, item.taskName, item.start, item.end, item.taskId, item.donePercentage, item.owner, item.image, item.groupName, isToDrawGroup];
+        let index_attributes = [index, item.taskName, item.start, item.end, item.taskId, item.donePercentage, item.owner, item.image, item.groupName, isToDrawGroup, groupInfo.color];
         mappedData.push(index_attributes);
     }
     
@@ -565,20 +567,23 @@ function mapGroups(taskData){
     let mappedGroups = {}
     //Im creating a map of groups => taskId
     for(let i = 0; i < _taskData.length; i++){
-        if(mappedGroups[_taskData[i].groupName] == undefined)
-            mappedGroups[_taskData[i].groupName] = [_taskData[i].taskId]
-        else
-            mappedGroups[_taskData[i].groupName].push(_taskData[i].taskId)
+        if(mappedGroups[_taskData[i].groupName] == undefined){
+            mappedGroups[_taskData[i].groupName] = {}
+            mappedGroups[_taskData[i].groupName].color = getRandomHexColor()
+            mappedGroups[_taskData[i].groupName].tasks = [_taskData[i].taskId]
+        }else
+            mappedGroups[_taskData[i].groupName].tasks.push(_taskData[i].taskId)
     }    
     
     return mappedGroups
 }
 
 function compareTasks(a, b) {
-    if (a.start > b.start) return -1;
-    if (b.start > a.start) return 1;
+    let dateComp = 0
+    if (a.start > b.start) dateComp = -1;
+    if (b.start > a.start) dateComp = 1;
     
-    return 0;
+    return -a.groupName.localeCompare(b.groupName) || dateComp;
 }
 
 function getTaskById(taskData, id){
@@ -599,6 +604,11 @@ function getTaskByIdInMappedData(mappedData, id){
     }
     
     return null;
+}
+
+function getRandomHexColor(){
+    var randomColor = Math.floor(Math.random()*16777215).toString(16);
+    return "#" + randomColor;
 }
 
 myChart.on('click', function (params) {
