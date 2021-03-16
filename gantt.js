@@ -13,9 +13,13 @@ var now3_2 = (new Date()).setDate(now.getDate() - 12);
 var now4_1 = (new Date()).setDate(now.getDate() + 33);
 var now4_2 = (new Date()).setDate(now.getDate() + 40);
 
+var now5_1 = (new Date()).setDate(now.getDate() + 43);
+var now5_2 = (new Date()).setDate(now.getDate() + 70);
+
 var _taskData = [
     {
         groupName: "Group 1",
+        groupOrder: 1,
         taskName: "tarefa 1",
         taskId: 1,
         taskDependencies: [],
@@ -26,6 +30,7 @@ var _taskData = [
         image: 'http://carismartes.com.br/assets/global/images/avatars/avatar2_big@2x.png'
     },{
         groupName: "Group 3",
+        groupOrder: 3,
         taskName: "tarefa 5",
         taskId: 5,
         taskDependencies: [1,3],
@@ -37,6 +42,7 @@ var _taskData = [
     },
     {
         groupName: "Group 2",
+        groupOrder: 2,
         taskName: "tarefa 2",
         taskId: 2,
         taskDependencies: [1],
@@ -48,6 +54,7 @@ var _taskData = [
     },
    {
         groupName: "Group 3",
+        groupOrder: 3,
         taskName: "tarefa 3",
         taskId: 3,
         taskDependencies: [],
@@ -59,6 +66,7 @@ var _taskData = [
     },
     {
         groupName: "Group 2",
+        groupOrder: 2,
         taskName: "tarefa 4",
         taskId: 4,
         taskDependencies: [2,3],
@@ -69,12 +77,35 @@ var _taskData = [
         image: 'http://carismartes.com.br/assets/global/images/avatars/avatar4_big@2x.png'
     },{
         groupName: "Group 2",
+        groupOrder: 2,
         taskName: "tarefa 6",
         taskId: 6,
         taskDependencies: [1,3,5],
         start: now2_1,
         end: now2_2,
         donePercentage: 100,
+        ower: '',
+        image: 'http://carismartes.com.br/assets/global/images/avatars/avatar1_big@2x.png'
+    },{
+        groupName: "Group 4",
+        groupOrder: 4,
+        taskName: "tarefa 7",
+        taskId: 7,
+        taskDependencies: [1],
+        start: now5_1,
+        end: now5_2,
+        donePercentage: 100,
+        ower: '',
+        image: 'http://carismartes.com.br/assets/global/images/avatars/avatar1_big@2x.png'
+    },{
+        groupName: "Group 4",
+        groupOrder: 4,
+        taskName: "tarefa 8",
+        taskId: 8,
+        taskDependencies: [7],
+        start: now5_1,
+        end: now5_2,
+        donePercentage: 80,
         ower: '',
         image: 'http://carismartes.com.br/assets/global/images/avatars/avatar1_big@2x.png'
     }
@@ -418,6 +449,18 @@ function renderAxisLabelItem(params, api) {
                 //shadowColor: 'rgba(0,0,0,0.3)'
             }
         })
+    }else{
+        groupedElement.children.push({
+            type: 'text',
+            style: {
+                x: -10,
+                y: -46,
+                text: groupName,
+                textVerticalAlign: 'bottom',
+                textAlign: 'left',
+                textFill: '#000'
+            }
+        })
     }
     
     return groupedElement
@@ -682,7 +725,11 @@ function compareTasks(a, b) {
     if (a.start > b.start) dateComp = -1;
     if (b.start > a.start) dateComp = 1;
     
-    return -a.groupName.localeCompare(b.groupName) || dateComp;
+    let groupOrderComp = 0
+    if (a.groupOrder > b.groupOrder) groupOrderComp = -1;
+    if (b.groupOrder > a.groupOrder) groupOrderComp = 1;
+    
+    return groupOrderComp || dateComp;
 }
 
 function getTaskById(taskData, id){
