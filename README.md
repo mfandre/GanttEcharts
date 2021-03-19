@@ -1,6 +1,25 @@
 # GanttEcharts
 Gantt Chart using echarts
 
+# Installation
+'''
+  npm install echarts -S
+  npm install ngx-echarts -S
+  npm install resize-observer-polyfill -D
+  npm install iamferraz-gantt-chart -S
+'''
+
+# Usage
+'''
+    <iamferraz-gantt 
+      [chartTitle]="'Gantt by André'" 
+      [(taskData)]="taskData" <!-- TaskModel[] -->
+      [enableDataZoom]="enableDataZoom" 
+      [enableDarkTheme]="enableDarkTheme" 
+      (editClicked)="onEditClicked($event)"> 
+    </iamferraz-gantt>
+'''
+
 # Folders
 - gantt-angular-npm (angular app example)
 - gantt-angular-sandbox (angular app to sandbox)
