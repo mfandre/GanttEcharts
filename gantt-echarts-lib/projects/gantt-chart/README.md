@@ -1,24 +1,24 @@
-# GanttChart
+# Iamferraz Gantt Echarts
+Gantt Chart using echarts
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.6.
+# Running
+![image](https://user-images.githubusercontent.com/1164677/111841394-ace7ff00-88dc-11eb-8fea-8edb1e69f4ec.png)
 
-## Code scaffolding
+# Installation
+```
+  npm install echarts -S
+  npm install ngx-echarts -S
+  npm install resize-observer-polyfill -D
+  npm install iamferraz-gantt-chart -S
+```
 
-Run `ng generate component component-name --project gantt-chart` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project gantt-chart`.
-> Note: Don't forget to add `--project gantt-chart` or else it will be added to the default project in your `angular.json` file. 
-
-## Build
-
-Run `ng build gantt-chart` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Publishing
-
-After building your library with `ng build gantt-chart`, go to the dist folder `cd dist/gantt-chart` and run `npm publish`.
-
-## Running unit tests
-
-Run `ng test gantt-chart` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+# Usage
+```
+    <iamferraz-gantt 
+      [chartTitle]="'Gantt by André'" 
+      [(taskData)]="taskData" <!-- TaskModel[] -->
+      [enableDataZoom]="enableDataZoom" 
+      [enableDarkTheme]="enableDarkTheme" 
+      (editClicked)="onEditClicked($event)"> 
+    </iamferraz-gantt>
+```
