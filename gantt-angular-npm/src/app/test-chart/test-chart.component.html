@@ -1,0 +1,3 @@
+<div class="wrapper" [style.width.%]="100" [style.height.%]="100" #wrapper>
+    <div echarts class="gantt-chart" [options]="chartOptions" [loading]="loading" (chartInit)="onChartInit($event)" [style.width.px]="ganttWidth" [style.height.px]="ganttHeight" #gantt></div>
+</div>

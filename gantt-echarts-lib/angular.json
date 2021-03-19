@@ -1,0 +1,51 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "d2cac1db-b2d8-41a3-909c-aaf35edff954"
+  },
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "gantt-chart": {
+      "projectType": "library",
+      "root": "projects/gantt-chart",
+      "sourceRoot": "projects/gantt-chart/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/gantt-chart/tsconfig.lib.json",
+            "project": "projects/gantt-chart/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/gantt-chart/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/gantt-chart/src/test.ts",
+            "tsConfig": "projects/gantt-chart/tsconfig.spec.json",
+            "karmaConfig": "projects/gantt-chart/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/gantt-chart/tsconfig.lib.json",
+              "projects/gantt-chart/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "gantt-chart"
+}
