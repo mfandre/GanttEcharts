@@ -1,4 +1,4 @@
-# GanttEcharts
+# Iamferraz Gantt Echarts
 Gantt Chart using echarts
 
 # Running
@@ -16,6 +16,7 @@ Gantt Chart using echarts
 ```
     <iamferraz-gantt 
       [chartTitle]="'Gantt by André'" 
+      [dateFormat]="{MM}/{dd}/{yyyy}" 
       [(taskData)]="taskData" <!-- TaskModel[] -->
       [enableDataZoom]="enableDataZoom" 
       [enableDarkTheme]="enableDarkTheme" 
