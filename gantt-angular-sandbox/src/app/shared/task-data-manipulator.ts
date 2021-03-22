@@ -2,9 +2,11 @@ import { TaskModel } from "../models/task-data.model";
 
 export class TaskDataManipulator {
     COLOURS:string[]
+    _enableGroup:boolean
 
-    constructor(colours:string[]){
+    constructor(colours:string[], enableGroup:boolean = true){
         this.COLOURS = colours
+        this._enableGroup = enableGroup
     }
 
     mapData(taskData:TaskModel[]): any[]{
@@ -25,7 +27,14 @@ export class TaskDataManipulator {
                     isToDrawGroup = 1
             }
             
-            let index_attributes = [index, item.taskName, item.start, item.end, item.taskId, item.donePercentage, item.owner, item.image, item.groupName, isToDrawGroup, groupInfo.color];
+            let color = "" 
+            if(this._enableGroup == false){
+                color = this.getColorHex(index)
+            }else{
+                color = groupInfo.color
+            }
+
+            let index_attributes = [index, item.taskName, item.start, item.end, item.taskId, item.donePercentage, item.owner, item.image, item.groupName, isToDrawGroup, color];
             mappedData.push(index_attributes);
         }
         
@@ -75,6 +84,10 @@ export class TaskDataManipulator {
          *  "groupName2" => { color: "#f0f", tasks: [taskId1, taskId2, ..., taskIdN]} 
          * }
          */
+         if(this._enableGroup == false){
+            //taskData[i].groupName = taskData[i].taskName
+            return {}
+        }
         let countColor = 0
         let mappedGroups:any = {}
         //Im creating a map of groups => taskId

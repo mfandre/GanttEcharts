@@ -258,41 +258,50 @@
     <button (click)="changeDataClicked(3)">Example data 3</button>
     <button (click)="toggleDataZoom()">Toggle data zoom</button>
     <button (click)="toggleDarkTheme()">Toggle dark theme</button>
+    <button (click)="toggleGroup()">Toggle data group</button>
   </div>
 
   <div style="width: 100%;height: 500px;">
     <iamferraz-gantt 
-    [chartTitle]="'Gantt by André de Mattos Ferraz'" 
-    [(taskData)]="taskData" 
-    [enableDataZoom]="enableDataZoom" 
-    [enableDarkTheme]="enableDarkTheme" 
-    (editClicked)="onEditClicked($event)"
-    [colours]="['#ff0','#0f0', '#00f']"
-    >
-  </iamferraz-gantt>
+      [chartTitle]="'Gantt by André de Mattos Ferraz'" 
+      [(taskData)]="taskData" 
+      [enableDataZoom]="enableDataZoom" 
+      [enableDarkTheme]="enableDarkTheme" 
+      (editClicked)="onEditClicked($event)"
+      [colours]="['#f00','#0f0', '#00f']"
+      [enableGroup]="enableGroup"
+      [dateFormat]="'{dd}/{MM}/{yyyy}'" 
+      [translation]="translation"
+      >
+    </iamferraz-gantt>
   </div>
 
   <!-- Terminal -->
   <h2>Installation</h2>
   <div class="terminal">
     <pre>
-    npm install echarts -S
-    npm install ngx-echarts -S
-    npm install resize-observer-polyfill -D
-    npm install iamferraz-gantt-chart -S
+npm install echarts -S
+npm install ngx-echarts -S
+npm install resize-observer-polyfill -D
+npm install iamferraz-gantt-chart -S
     </pre>
   </div>
 
   <h2>Usage</h2>
   <div class="terminal">
     <pre>
-    &lt;iamferraz-gantt 
-      [chartTitle]=&quot;'Gantt by Andr&eacute;'&quot; 
-      [(taskData)]=&quot;taskData&quot; &lt;!-- TaskModel[] --&gt;
-      [enableDataZoom]=&quot;enableDataZoom&quot; 
-      [enableDarkTheme]=&quot;enableDarkTheme&quot; 
-      (editClicked)=&quot;onEditClicked($event)&quot;&gt; 
-    &lt;/iamferraz-gantt&gt;
+&lt;iamferraz-gantt 
+  [chartTitle]=&quot;'Gantt by Andr&eacute;'&quot; 
+  [(taskData)]=&quot;taskData&quot; &lt;!-- TaskModel[] --&gt;
+  [enableDataZoom]=&quot;enableDataZoom&quot; 
+  [enableDarkTheme]=&quot;enableDarkTheme&quot; 
+  (editClicked)=&quot;onEditClicked($event)&quot;&gt; 
+  [colours]="[&quot;#f00&quot;,&quot;#0f0&quot;, &quot;#00f&quot;]"
+  [enableGroup]=&quot;enableGroup&quot;
+  [dateFormat]=&quot;&#123;MM&#125;/&#123;dd&#125;/&#123;yyyy&#125;&quot;
+  [loading]=&quot;false|true&quot;
+  [translation]=&quot;translation&quot; &lt;!-- object with keys: DONE, TO_END, DELAYED --&gt;
+&lt;/iamferraz-gantt&gt;
     </pre>
   </div>
 

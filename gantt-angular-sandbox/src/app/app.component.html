@@ -256,8 +256,10 @@
     <button (click)="changeDataClicked(1)">Example data 1</button>
     <button (click)="changeDataClicked(2)">Example data 2</button>
     <button (click)="changeDataClicked(3)">Example data 3</button>
+    <button (click)="changeDataClicked(4)">Example data 4</button>
     <button (click)="toggleDataZoom()">Toggle data zoom</button>
     <button (click)="toggleDarkTheme()">Toggle dark theme</button>
+    <button (click)="toggleGroup()">Toggle data group</button>
   </div>
 
   <div style="width: 100%;height: 500px;">
@@ -268,6 +270,7 @@
     [enableDarkTheme]="enableDarkTheme" 
     (editClicked)="onEditClicked($event)"
     [colours]="['#f00','#0f0', '#00f']"
+    [enableGroup]="enableGroup"
     >
   </iamferraz-gantt>
   </div>

@@ -7,21 +7,25 @@ export class GanttRenderers {
     private HEIGHT_RATIO:number
     private DATE_FORMAT:string
     private _darkTheme:boolean
+    private _enableGroup:boolean
     private _taskData:TaskModel[]
     private _mappedData:any[]
     private taskDataManipulator:TaskDataManipulator
+    private _translation:any
 
     //normal|dark
     private arrowColors:string[] = ["#000", "#fff"]
     private zebraColor:any[] = [["#f2f2f2","#e6e6e6"],["#212529","#2C3034"]]
 
-    constructor(taskData:TaskModel[], mappedData:any[], colours:string[], dateFormat:string, heightRatio :number, darkTheme:boolean = false){
+    constructor(taskData:TaskModel[], mappedData:any[], colours:string[], dateFormat:string, heightRatio :number, translation: any, enableGroup:boolean = true, darkTheme:boolean = false){
         this._taskData = taskData
         this._mappedData = mappedData
-        this.taskDataManipulator = new TaskDataManipulator(colours)
+        this.taskDataManipulator = new TaskDataManipulator(colours, enableGroup)
         this.DATE_FORMAT = dateFormat
         this.HEIGHT_RATIO = heightRatio
         this._darkTheme = darkTheme
+        this._enableGroup = enableGroup
+        this._translation = translation
     }
 
     renderGanttItem(params:any, api:any) {
@@ -101,7 +105,7 @@ export class GanttRenderers {
         var groupColor = api.value(10)
         
         //console.log(taskId, groupName, isToDrawGroup, groupColor)
-        var daysToEnd = DateManipulator.daysLeft(end)
+        var daysToEnd = DateManipulator.daysLeft(end,this._translation)
         var y = api.coord([0, index])[1];
         var barHeight = api.size([0, 1])[1];
         
@@ -159,26 +163,28 @@ export class GanttRenderers {
             }]
         };
         
-        if(isToDrawGroup == 1){ // group agrupator (Vertical rectangle)
-            groupedElement.children.push({
-                type: 'rect',
-                shape: {x: 105, y: (params.coordSys.y-2*barHeight)-(barHeight/3), width: 10, height: 46},
-                style: {
-                    fill: groupColor,
-                }
-            })
-        }else{
-            groupedElement.children.push({
-                type: 'text',
-                style: {
-                    x: -10,
-                    y: (params.coordSys.y-2*barHeight)+(barHeight/9),
-                    text: groupName,
-                    textVerticalAlign: 'bottom',
-                    textAlign: 'left',
-                    textFill: this._darkTheme ? '#fff' : '#000'
-                }
-            })
+        if(this._enableGroup){
+            if(isToDrawGroup == 1){ // group agrupator (Vertical rectangle)
+                groupedElement.children.push({
+                    type: 'rect',
+                    shape: {x: 105, y: (params.coordSys.y-2*barHeight)-(barHeight/3), width: 10, height: 46},
+                    style: {
+                        fill: groupColor,
+                    }
+                })
+            }else{
+                groupedElement.children.push({
+                    type: 'text',
+                    style: {
+                        x: -10,
+                        y: (params.coordSys.y-2*barHeight)+(barHeight/9),
+                        text: groupName,
+                        textVerticalAlign: 'bottom',
+                        textAlign: 'left',
+                        textFill: this._darkTheme ? '#fff' : '#000'
+                    }
+                })
+            }
         }
         
         return groupedElement

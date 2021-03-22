@@ -14,6 +14,12 @@ export class AppComponent implements OnInit, AfterContentChecked {
   taskData3:TaskModel[] = [];
   enableDataZoom:boolean = false
   enableDarkTheme:boolean = false
+  enableGroup:boolean = false
+  translation:any = {
+    DONE: "done",
+    TO_END: "days to finish",
+    DELAYED: "delayed"
+  };
 
   constructor(){
     
@@ -27,6 +33,10 @@ export class AppComponent implements OnInit, AfterContentChecked {
 
   toggleDarkTheme(): void{
     this.enableDarkTheme = !this.enableDarkTheme
+  }
+
+  toggleGroup(): void{
+    this.enableGroup = !this.enableGroup
   }
 
   changeDataClicked(dataNumber:number): void{

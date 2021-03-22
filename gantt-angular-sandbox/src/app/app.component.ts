@@ -12,11 +12,17 @@ export class AppComponent implements OnInit, AfterContentChecked {
   taskData1:TaskModel[] = [];
   taskData2:TaskModel[] = [];
   taskData3:TaskModel[] = [];
+  taskData4:TaskModel[] = [];
   enableDataZoom:boolean = false
   enableDarkTheme:boolean = false
+  enableGroup:boolean = true
 
   constructor(){
     
+  }
+
+  toggleGroup(): void{
+    this.enableGroup = !this.enableGroup
   }
 
   toggleDataZoom(): void{
@@ -39,6 +45,9 @@ export class AppComponent implements OnInit, AfterContentChecked {
         break;
       case 3:
         this.taskData = this.taskData3
+        break;
+      case 4:
+        this.taskData = this.taskData4
         break;
       default:
         this.taskData = []
@@ -281,6 +290,44 @@ export class AppComponent implements OnInit, AfterContentChecked {
       {
           groupName: "Group 2",
           groupOrder: 2,
+          taskName: "tarefa 2",
+          taskId: 2,
+          taskDependencies: [1],
+          start: now2_1,
+          end: now2_2,
+          donePercentage: 10,
+          owner: '',
+          image: 'http://carismartes.com.br/assets/global/images/avatars/avatar3_big@2x.png'
+      }
+    ];
+
+    this.taskData4 = [
+      {
+          groupName: "",
+          groupOrder: 0,
+          taskName: "tarefa 1",
+          taskId: 1,
+          taskDependencies: [],
+          start: now1_1,
+          end: now1_2,
+          donePercentage: 10,
+          owner: '',
+          image: 'http://carismartes.com.br/assets/global/images/avatars/avatar2_big@2x.png'
+      },{
+          groupName: "",
+          groupOrder: 0,
+          taskName: "tarefa 5",
+          taskId: 5,
+          taskDependencies: [1,3],
+          start: now1_1,
+          end: now1_2,
+          donePercentage: 30,
+          owner: '',
+          image: 'http://carismartes.com.br/assets/global/images/avatars/avatar1_big@2x.png'
+      },
+      {
+          groupName: "",
+          groupOrder: 0,
           taskName: "tarefa 2",
           taskId: 2,
           taskDependencies: [1],

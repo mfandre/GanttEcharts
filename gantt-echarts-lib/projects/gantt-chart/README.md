@@ -16,13 +16,15 @@ Gantt Chart using echarts
 ```
     <iamferraz-gantt 
       [chartTitle]="'Gantt by André'" 
-      [dateFormat]="{MM}/{dd}/{yyyy}" 
+      [dateFormat]="'{MM}/{dd}/{yyyy}'" 
       [(taskData)]="taskData" <!-- TaskModel[] -->
       [enableDataZoom]="enableDataZoom" 
       [enableDarkTheme]="enableDarkTheme" 
+      [enableGroup]="true" <!-- is to group elements? -->
       (editClicked)="onEditClicked($event)"
       [colours]="['#f00','#0f0','#00f']" <!-- task colours -->
       [loading]="false" <!-- loading animation -->
+      [translation]="translation" <!-- { DONE: "done", TO_END: "days to finish", DELAYED: "delayed" } -->
       > 
     </iamferraz-gantt>
 ```

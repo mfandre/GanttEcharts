@@ -31,6 +31,9 @@ export class GanttComponent implements OnInit, AfterViewInit, OnChanges, AfterCo
   public enableDarkTheme: boolean = false;
 
   @Input()
+  public enableGroup: boolean = true;
+
+  @Input()
   public chartTitle: string = "";
 
   @Input()
@@ -47,6 +50,16 @@ export class GanttComponent implements OnInit, AfterViewInit, OnChanges, AfterCo
 
   @Input()
   public height: number = 300;
+
+  /**
+   * To replace the strings
+   */
+  @Input()
+  public translation: any = {
+    DONE: "done",
+    TO_END: "days to finish",
+    DELAYED: "delayed"
+  };
 
   /**
    * Variable to control chart
@@ -66,7 +79,7 @@ export class GanttComponent implements OnInit, AfterViewInit, OnChanges, AfterCo
   private todayData:any[];
 
   constructor() { 
-    this.taskDataManipulator = new TaskDataManipulator(this.colours)
+    this.taskDataManipulator = new TaskDataManipulator(this.colours, this.enableGroup)
     
     this.taskData = this.taskData.sort(this.taskDataManipulator.compareTasks)
 
@@ -104,6 +117,7 @@ export class GanttComponent implements OnInit, AfterViewInit, OnChanges, AfterCo
 
   getTooltipOption():any{
     let DATE_FORMAT = this.dateFormat
+    let translation = this.translation
     return {
       confine: true,
       appendToBody: true,
@@ -132,7 +146,7 @@ export class GanttComponent implements OnInit, AfterViewInit, OnChanges, AfterCo
           return [
               '<div class="tooltip-title">' + echarts.format.encodeHTML(taskName) + '</div>',
               start + ' - ',
-              end + '<br>', donePercentage + '% done'
+              end + '<br>', donePercentage + '% ' + (translation ? translation.DONE : "DONE")
           ].join('');
       }
     }
@@ -391,14 +405,14 @@ export class GanttComponent implements OnInit, AfterViewInit, OnChanges, AfterCo
     if(this.echartsInstance){
       this.echartsInstance.clear()
     }
-    this.taskDataManipulator = new TaskDataManipulator(this.colours)
+    this.taskDataManipulator = new TaskDataManipulator(this.colours, this.enableGroup)
     this.taskData = this.taskData.sort(this.taskDataManipulator.compareTasks)
 
     //after sort we map to maintain the order
     this.mappedData = this.taskDataManipulator.mapData(this.taskData)
     this.zebraData = this.taskDataManipulator.mapZebra(this.taskData)
     this.todayData = [new Date()]
-    this.renderers = new GanttRenderers(this.taskData, this.mappedData,this.colours, this.dateFormat, this.heightRatio, this.enableDarkTheme)
+    this.renderers = new GanttRenderers(this.taskData, this.mappedData,this.colours, this.dateFormat, this.heightRatio, this.translation, this.enableGroup, this.enableDarkTheme)
     this.setChartOptions()
   }
 

@@ -8,7 +8,7 @@ export class DateManipulator {
         return Math.round((second-first)/(1000*60*60*24));
     }
     
-    static daysLeft(baseDate:number){
+    static daysLeft(baseDate:number, translation:any){
         //get days left based on today
         var left = this.datediff(baseDate, new Date().getTime())
         if(left < 0){
