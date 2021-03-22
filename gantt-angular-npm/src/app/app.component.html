@@ -261,7 +261,15 @@
   </div>
 
   <div style="width: 100%;height: 500px;">
-    <iamferraz-gantt [chartTitle]="'Gantt by André de Mattos Ferraz'" [(taskData)]="taskData" [enableDataZoom]="enableDataZoom" [enableDarkTheme]="enableDarkTheme" (editClicked)="onEditClicked($event)"></iamferraz-gantt>
+    <iamferraz-gantt 
+    [chartTitle]="'Gantt by André de Mattos Ferraz'" 
+    [(taskData)]="taskData" 
+    [enableDataZoom]="enableDataZoom" 
+    [enableDarkTheme]="enableDarkTheme" 
+    (editClicked)="onEditClicked($event)"
+    [colours]="['#ff0','#0f0', '#00f']"
+    >
+  </iamferraz-gantt>
   </div>
 
   <!-- Terminal -->

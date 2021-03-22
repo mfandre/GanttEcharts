@@ -139,7 +139,7 @@ export class TaskDataManipulator {
     }
 
     getColorHex(index:number): string{
-        if(index > this.COLOURS.length)
+        if(index >= this.COLOURS.length)
             index = 0
     
         return this.COLOURS[index]

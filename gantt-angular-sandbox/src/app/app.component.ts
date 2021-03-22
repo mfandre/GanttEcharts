@@ -47,7 +47,7 @@ export class AppComponent implements OnInit, AfterContentChecked {
   }
 
   onEditClicked(event:boolean){
-    alert("do what do you want")
+    alert("Clicked event")
   }
 
   ngAfterContentChecked(): void {

@@ -5,7 +5,7 @@ import { GanttRenderers } from '../shared/gantt-renderers';
 import { TaskDataManipulator } from '../shared/task-data-manipulator';
 
 @Component({
-  selector: 'app-gantt',
+  selector: 'iamferraz-gantt',
   templateUrl: './gantt.component.html',
   styleUrls: ['./gantt.component.css']
 })
@@ -391,6 +391,7 @@ export class GanttComponent implements OnInit, AfterViewInit, OnChanges, AfterCo
     if(this.echartsInstance){
       this.echartsInstance.clear()
     }
+    this.taskDataManipulator = new TaskDataManipulator(this.colours)
     this.taskData = this.taskData.sort(this.taskDataManipulator.compareTasks)
 
     //after sort we map to maintain the order

@@ -20,7 +20,10 @@ Gantt Chart using echarts
       [(taskData)]="taskData" <!-- TaskModel[] -->
       [enableDataZoom]="enableDataZoom" 
       [enableDarkTheme]="enableDarkTheme" 
-      (editClicked)="onEditClicked($event)"> 
+      (editClicked)="onEditClicked($event)"
+      [colours]="['#f00','#0f0','#00f']" <!-- task colours -->
+      [loading]="false" <!-- loading animation -->
+      > 
     </iamferraz-gantt>
 ```
 

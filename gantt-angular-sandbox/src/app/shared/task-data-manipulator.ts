@@ -71,8 +71,8 @@ export class TaskDataManipulator {
         /**
          * return a hash 
          * { 
-         *  "groupName1" => { color: "#222", tasks: [taskId1, taskId2, ..., taskIdN]} 
-         *  "groupName2" => { color: "#222", tasks: [taskId1, taskId2, ..., taskIdN]} 
+         *  "groupName1" => { color: "#0f0", tasks: [taskId1, taskId2, ..., taskIdN]} 
+         *  "groupName2" => { color: "#f0f", tasks: [taskId1, taskId2, ..., taskIdN]} 
          * }
          */
         let countColor = 0
@@ -139,7 +139,7 @@ export class TaskDataManipulator {
     }
 
     getColorHex(index:number): string{
-        if(index > this.COLOURS.length)
+        if(index >= this.COLOURS.length)
             index = 0
     
         return this.COLOURS[index]
