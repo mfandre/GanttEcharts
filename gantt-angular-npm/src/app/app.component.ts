@@ -18,7 +18,19 @@ export class AppComponent implements OnInit, AfterContentChecked {
   translation:any = {
     DONE: "done",
     TO_END: "days to finish",
-    DELAYED: "delayed"
+    DELAYED: "delayed",
+    JANUARY : "Jan",
+    FEBRUARY : "Fev",
+    MARCH : "Mar",
+    APRIL : "Apr",
+    MAY : "May",
+    JUNE : "Jun",
+    JULY : "Jul",
+    AUGUST : "Aug",
+    SEPTEMBER : "Sep",
+    OCTOBER : "Oct",
+    NOVEMBER : "Nov",
+    DECEMBER : "Dec"
   };
 
   constructor(){

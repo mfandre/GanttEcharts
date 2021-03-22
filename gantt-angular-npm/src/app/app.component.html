@@ -268,7 +268,6 @@
       [enableDataZoom]="enableDataZoom" 
       [enableDarkTheme]="enableDarkTheme" 
       (editClicked)="onEditClicked($event)"
-      [colours]="['#f00','#0f0', '#00f']"
       [enableGroup]="enableGroup"
       [dateFormat]="'{dd}/{MM}/{yyyy}'" 
       [translation]="translation"
@@ -303,6 +302,28 @@ npm install iamferraz-gantt-chart -S
   [translation]=&quot;translation&quot; &lt;!-- object with keys: DONE, TO_END, DELAYED --&gt;
 &lt;/iamferraz-gantt&gt;
     </pre>
+  </div>
+
+  <div class="terminal">
+  <pre>
+translation = &#123;
+  DONE: "done",
+  TO_END: "days to finish",
+  DELAYED: "delayed",
+  JANUARY : "Jan",
+  FEBRUARY : "Fev",
+  MARCH : "Mar",
+  APRIL : "Apr",
+  MAY : "May",
+  JUNE : "Jun",
+  JULY : "Jul",
+  AUGUST : "Aug",
+  SEPTEMBER : "Sep",
+  OCTOBER : "Oct",
+  NOVEMBER : "Nov",
+  DECEMBER : "Dec"
+&#125;
+  </pre>
   </div>
 
   <h2>RoadMap</h2>

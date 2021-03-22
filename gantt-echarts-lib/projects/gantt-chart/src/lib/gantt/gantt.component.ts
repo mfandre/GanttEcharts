@@ -58,7 +58,19 @@ export class GanttComponent implements OnInit, AfterViewInit, OnChanges, AfterCo
   public translation: any = {
     DONE: "done",
     TO_END: "days to finish",
-    DELAYED: "delayed"
+    DELAYED: "delayed",
+    JANUARY : "Jan",
+    FEBRUARY : "Fev",
+    MARCH : "Mar",
+    APRIL : "Apr",
+    MAY : "May",
+    JUNE : "Jun",
+    JULY : "Jul",
+    AUGUST : "Aug",
+    SEPTEMBER : "Sep",
+    OCTOBER : "Oct",
+    NOVEMBER : "Nov",
+    DECEMBER : "Dec"
   };
 
   /**
@@ -191,6 +203,7 @@ export class GanttComponent implements OnInit, AfterViewInit, OnChanges, AfterCo
   }
 
   getXAxisOption():any{
+    
     return {
       type: 'time',
       position: 'top',
@@ -211,17 +224,73 @@ export class GanttComponent implements OnInit, AfterViewInit, OnChanges, AfterCo
           color: '#929ABA',
           inside: false,
           align: 'center',
-          /*formatter: function (value, index) {
-              console.log("value", value)
-
-              return echarts.time.format(
-                  value,
-                  DATE_FORMAT,
-                  false
-              );
-          }*/
+          formatter: this.formatLabelDate.bind(this)
       }
     }
+  }
+
+  formatLabelDate(value:Date, index:number):string{
+    let valueDate = new Date(value)
+
+    let dayToday = valueDate.getDate()
+    let monthToday = valueDate.getMonth()
+    if(this.isFirstDay(dayToday,monthToday)){
+      return this.getMonthName(monthToday)
+    }
+    return dayToday + "";
+    /*let DATE_FORMAT = this.dateFormat
+    return echarts.time.format(
+        value,
+        DATE_FORMAT,
+        false
+    );*/
+  }
+
+  /**
+   * 
+   * @param dayToday day reference to check if is the last day of the month
+   * @param month (0-11) month reference to check if the day passed is the last day of the month.
+   * @returns true if day is the last day of the month. False otherwise
+   */
+  getLastDayMonth(dayToday:number, month:number):boolean{
+    //var month = 0; // January
+    var d = new Date(new Date().getFullYear(), month + 1, 0).getDate();
+
+    return d == dayToday
+  }
+
+  isFirstDay(dayToday:number, month:number):boolean{
+    return dayToday == 1
+  }
+
+  getMonthName(month:number):string{
+    switch(month){
+      case 0:
+        return this.translation ? this.translation.JANUARY : "Jan"
+      case 1:
+        return this.translation ? this.translation.FEBRUARY : "Fev"
+      case 2:
+        return this.translation ? this.translation.MARCH : "Mar"
+      case 3:
+        return this.translation ? this.translation.APRIL : "Apr"
+      case 4:
+        return this.translation ? this.translation.MAY : "May"
+      case 5:
+        return this.translation ? this.translation.JUNE : "Jun"
+      case 6:
+        return this.translation ? this.translation.JULY : "Jul"
+      case 7:
+        return this.translation ? this.translation.AUGUST : "Aug"
+      case 8:
+        return this.translation ? this.translation.SEPTEMBER : "Sep"
+      case 9:
+        return this.translation ? this.translation.OCTOBER : "Oct"
+      case 10:
+        return this.translation ? this.translation.NOVEMBER : "Nov"
+      case 11:
+        return this.translation ? this.translation.DECEMBER : "Dec"
+    }
+    return ""
   }
 
   getYAxisOption():any{
