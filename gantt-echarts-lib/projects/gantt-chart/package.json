@@ -1,12 +1,12 @@
 {
   "name": "iamferraz-gantt-chart",
-  "version": "1.0.12",
-  "homepage": "https://github.com/mfandre/GanttEcharts",
+  "version": "1.0.13",
+  "homepage": "http://iamferraz.com.br/gantt",
   "publisher": "André de Mattos Ferraz",
   "license": "MIT",
   "author": {
     "name" : "André de Mattos Ferraz",
-    "url" : "http://iamferraz.com.br/"
+    "url" : "http://iamferraz.com.br/gantt"
   },
   "description": "Gantt Chart Component using Echarts library",
   "keywords": ["chart", "echarts", "gantt", "ngx-echarts", "angular"],

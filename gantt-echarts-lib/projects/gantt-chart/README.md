@@ -1,7 +1,10 @@
 # Iamferraz Gantt Echarts
 Gantt Chart using echarts
 
-# Running
+# Example
+[Running Example](http://iamferraz.com.br/gantt)
+
+# Screenshot
 ![image](https://user-images.githubusercontent.com/1164677/111841394-ace7ff00-88dc-11eb-8fea-8edb1e69f4ec.png)
 
 # Installation
@@ -48,4 +51,20 @@ translation: any = {
     NOVEMBER : "Nov",
     DECEMBER : "Dec"
   };
+```
+
+Dont forget to import the NgxEchartsModule into your app module!
+
+```
+import { NgxEchartsModule } from 'ngx-echarts';
+
+@NgModule({
+  imports: [
+    ...,
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts')
+    })
+  ],
+})
+export class AppModule { }
 ```
