@@ -3,6 +3,7 @@
   "version": "1.0.11",
   "homepage": "https://github.com/mfandre/GanttEcharts",
   "publisher": "André de Mattos Ferraz",
+  "license": "MIT",
   "author": {
     "name" : "André de Mattos Ferraz",
     "url" : "http://iamferraz.com.br/"
