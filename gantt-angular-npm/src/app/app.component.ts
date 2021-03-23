@@ -72,6 +72,46 @@ export class AppComponent implements OnInit, AfterContentChecked {
     alert("Clicked event")
   }
 
+  onTaskClicked(event:TaskModel | null){
+    console.log("onTaskClicked======>",event)
+    if(this.taskData == undefined)
+      return;
+    
+    for(let i = 0; i < this.taskData.length; i++){
+      let task:TaskModel = this.taskData[i]
+
+      if(task.taskId == event?.taskId){
+        let percent = prompt("Taks %", "20")!;
+        let start = prompt("Start date", "yyyy-mm-dd")!;
+        let end = prompt("End date", "yyyy-mm-dd")!;
+
+        task.donePercentage = parseInt(percent);
+        try {
+          let startNumber = Date.parse(start)
+          let endNumber = Date.parse(end)
+
+          console.log(startNumber)
+          if(isNaN(startNumber) || isNaN(endNumber))
+            break;
+
+          let startDate = new Date(startNumber) //"2019-01-01"
+          let endDate = new Date(endNumber)
+          //console.log("start date", startDate)
+          //console.log("end date", endDate)
+          task.start = startDate
+          task.end = endDate
+        } catch (error) {
+          alert("invalid date: " + error)
+        }
+
+        
+      }
+    }
+
+    //Angular change detection only checks object identity, not object content. Inserts or removals are therefore not detected.
+    this.taskData = this.taskData.slice();//forcing onchange
+  }
+
   ngAfterContentChecked(): void {
     //console.log("zicaaaa")
   }

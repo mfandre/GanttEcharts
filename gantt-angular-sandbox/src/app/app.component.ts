@@ -59,6 +59,10 @@ export class AppComponent implements OnInit, AfterContentChecked {
     alert("Clicked event")
   }
 
+  onTaskClicked(event:TaskModel){
+    console.log("uhullll", event)
+  }
+
   ngAfterContentChecked(): void {
     //console.log("zicaaaa")
   }

@@ -17,19 +17,20 @@ Gantt Chart using echarts
 
 # Usage
 ```
-    <iamferraz-gantt 
-      [chartTitle]="'Gantt by André'" 
-      [dateFormat]="'{MM}/{dd}/{yyyy}'" 
-      [(taskData)]="taskData" <!-- TaskModel[] -->
-      [enableDataZoom]="enableDataZoom" 
-      [enableDarkTheme]="enableDarkTheme" 
-      [enableGroup]="true" <!-- is to group elements? -->
-      (editClicked)="onEditClicked($event)"
-      [colours]="['#f00','#0f0','#00f']" <!-- task colours -->
-      [loading]="false" <!-- loading animation -->
-      [translation]="see below"
-      > 
-    </iamferraz-gantt>
+  <iamferraz-gantt 
+    [chartTitle]="'Gantt by André'" 
+    [dateFormat]="'{MM}/{dd}/{yyyy}'" 
+    [(taskData)]="taskData" <!-- TaskModel[] -->
+    [enableDataZoom]="enableDataZoom" 
+    [enableDarkTheme]="enableDarkTheme" 
+    [enableGroup]="true" <!-- is to group elements? -->
+    (editClicked)="onEditClicked($event)"
+    (taskClicked)="onTaskClicked($event)" <!-- $event = TaskModel -->
+    [colours]="['#f00','#0f0','#00f']" <!-- task colours -->
+    [loading]="false" <!-- loading animation -->
+    [translation]="see below"
+    > 
+  </iamferraz-gantt>
 ```
 
 Translation object:

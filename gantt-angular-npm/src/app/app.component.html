@@ -301,6 +301,7 @@
       [enableDataZoom]="enableDataZoom" 
       [enableDarkTheme]="enableDarkTheme" 
       (editClicked)="onEditClicked($event)"
+      (taskClicked)="onTaskClicked($event)"
       [enableGroup]="enableGroup"
       [dateFormat]="'{dd}/{MM}/{yyyy}'" 
       [translation]="translation"
@@ -328,6 +329,7 @@ npm install iamferraz-gantt-chart -S
   [enableDataZoom]=&quot;enableDataZoom&quot; 
   [enableDarkTheme]=&quot;enableDarkTheme&quot; 
   (editClicked)=&quot;onEditClicked($event)&quot;&gt; 
+  (taskClicked)=&quot;onTaskClicked($event)&quot;
   [colours]="[&quot;#f00&quot;,&quot;#0f0&quot;, &quot;#00f&quot;]"
   [enableGroup]=&quot;enableGroup&quot;
   [dateFormat]=&quot;&#123;MM&#125;/&#123;dd&#125;/&#123;yyyy&#125;&quot;

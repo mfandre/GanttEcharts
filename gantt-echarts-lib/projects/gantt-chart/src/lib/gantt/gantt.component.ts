@@ -21,6 +21,9 @@ export class GanttComponent implements OnInit, AfterViewInit, OnChanges, AfterCo
 
   @Output()
   public editClicked: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  @Output() 
+  public taskClicked: EventEmitter<TaskModel | null> = new EventEmitter<TaskModel | null>();
   /**
    * The scroll will stop to work... its a bug that I cant figure it out :(
    */
@@ -329,6 +332,7 @@ export class GanttComponent implements OnInit, AfterViewInit, OnChanges, AfterCo
       id:'arrow',
       type: 'custom',
       clip: true,
+      silent: true,
       itemStyle: {
           borderType: 'dashed'
       },
@@ -500,6 +504,26 @@ export class GanttComponent implements OnInit, AfterViewInit, OnChanges, AfterCo
     this.echartsInstance = ec;
     this.echartsInstance.resize();
   }
+
+  onTaskClicked(params:any){
+    if(params != undefined){
+      /*let task:TaskModel = new TaskModel()
+      task.taskName = params.value[1]
+      task.start = params.value[2]
+      task.end = params.value[3]
+      task.taskId = params.value[4]
+      task.donePercentage = params.value[5]
+      task.owner = params.value[6]
+      task.image = params.value[7]
+      task.groupName = params.value[8]*/
+      //re-mapping [index, item.taskName, item.start, item.end, item.taskId, item.donePercentage, item.owner, item.image, item.groupName, isToDrawGroup, color] into taskmodel
+      let task:TaskModel | null = this.taskDataManipulator.getTaskById(this.taskData, params.value[4])
+      if(this.taskClicked != undefined)
+        this.taskClicked.emit(task)
+    }
+      
+  }
+
   
   resizeChart() {
     if (this.echartsInstance) {

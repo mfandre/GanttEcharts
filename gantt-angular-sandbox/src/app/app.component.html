@@ -269,7 +269,8 @@
     [enableDataZoom]="enableDataZoom" 
     [enableDarkTheme]="enableDarkTheme" 
     (editClicked)="onEditClicked($event)"
-    [colours]="['#f00','#0f0', '#00f']"
+    (taskClicked)="onTaskClicked($event)"
+    
     [enableGroup]="enableGroup"
     >
   </iamferraz-gantt>
