@@ -96,6 +96,7 @@ export class GanttRenderers {
         var index = api.value(0)
         var taskName = api.value(1)
         var taskId = api.value(4)
+        var donePercentage = api.value(5)
         var start = api.value(2)
         var end = api.value(3)
         var owner = api.value(6)
@@ -108,6 +109,10 @@ export class GanttRenderers {
         var daysToEnd = DateManipulator.daysLeft(end,this._translation)
         var y = api.coord([0, index])[1];
         var barHeight = api.size([0, 1])[1];
+
+        if(donePercentage == 100){
+            daysToEnd = (this._translation ? this._translation.FINISHED : "FINISHED")
+        }
         
         let groupedElement = {
             type: 'group',

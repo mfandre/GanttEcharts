@@ -62,6 +62,7 @@ export class GanttComponent implements OnInit, AfterViewInit, OnChanges, AfterCo
     DONE: "done",
     TO_END: "days to finish",
     DELAYED: "delayed",
+    FINISHED: "completed",
     JANUARY : "Jan",
     FEBRUARY : "Fev",
     MARCH : "Mar",

@@ -19,6 +19,7 @@ export class AppComponent implements OnInit, AfterContentChecked {
     DONE: "done",
     TO_END: "days to finish",
     DELAYED: "delayed",
+    FINISHED: "Completed",
     JANUARY : "Jan",
     FEBRUARY : "Fev",
     MARCH : "Mar",
